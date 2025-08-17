@@ -4,7 +4,7 @@ A collection of Arduino Uno projects written in C and C++ for learning embedded 
 ## Overview
 This repository contains various Arduino projects implemented in C and C++ to explore embedded programming concepts. The goal is to understand low-level hardware interaction, memory management, and efficient code practices for embedded development.
 
-Since the goal is to learn C & C++ for embedded systems, some of the projects also contain a version of the code written in the Arduino language (.ino). 
+Since the goal is to learn C & C++ for embedded systems, some of the projects also contain a version of the code written in the Arduino language (.ino) as aprototype for ease of rewrites. 
 
 ## Compiling and uploading
 Each of the c/c++ projects contains a makefile that can be used to compile, upload and clean the projects.
@@ -43,6 +43,10 @@ arduino-cli upload -p COM7 --fqbn arduino:avr:uno /path/to/your/sketch
     - .c version:
         - Program:    4256 bytes (13.0% Full)
         - Data:         48 bytes (2.3% Full)
+- ssd1306_tmp36 - Temperature sensor reading and displaying result on ssd1306 
+    - .ino version:
+        - 20026 bytes (62%) of program storage space
+        - 631 bytes (30%) of dynamic memory, leaving 1417 bytes for local variables
 
 Next up:
 i2c
