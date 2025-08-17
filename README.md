@@ -9,6 +9,9 @@ Since the goal is to learn C++ for embedded systems, some of the projects also c
 ## Projects
 blink - Classic LED blink, exploring GPIO control and timing
 tmp36 - Temperature sensor reading with ADC operations
+Next up:
+i2c
+ssd1306+tmp36
 More projects coming...
 
 ## Resources
