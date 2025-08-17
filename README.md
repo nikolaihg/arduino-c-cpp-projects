@@ -6,9 +6,41 @@ This repository contains various Arduino projects implemented in C and C++ to ex
 
 Since the goal is to learn C & C++ for embedded systems, some of the projects also contain a version of the code written in the Arduino language (.ino). 
 
+## Compiling and uploading
+Each of the c/c++ projects contains a makefile that can be used to compile, upload and clean the projects.
+```bash
+make
+make upload
+make clean
+```
+
+But you can also upload the arduino sketches located in the projects with the `arduino-cli`:
+```bash
+# 1. Install the core for your board (example for Arduino Uno)
+arduino-cli core install arduino:avr
+# 2. Create a new sketch (optional)
+arduino-cli sketch new MySketch
+# 3. Compile the sketch
+arduino-cli compile --fqbn arduino:avr:uno /path/to/your/sketch
+# 4. Upload to board (Linux / Unix)
+arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno /path/to/your/sketch
+# Windows
+arduino-cli upload -p COM7 --fqbn arduino:avr:uno /path/to/your/sketch
+```
+
 ## Projects
 blink - Classic LED blink, exploring GPIO control and timing
+- .ino version: 
+    - 340 bytes (1%) of program storage space
+    - 9 bytes (0%) of dynamic memory
+- .c version: 
+    - Program:  176 bytes (0.5% Full)
+    - Data:       0 bytes (0.0% Full)
 tmp36 - Temperature sensor reading with ADC operations
+- .ino version:
+- .c version:
+    Program:    2766 bytes (8.4% Full)
+    Data:         20 bytes (1.0% Full)
 Next up:
 i2c
 ssd1306+tmp36
