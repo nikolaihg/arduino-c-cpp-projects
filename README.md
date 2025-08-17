@@ -1,10 +1,10 @@
 # arduino-cpp-projects
-A collection of Arduino Uno projects written in C++ for learning embedded systems development.
+A collection of Arduino Uno projects written in C and C++ for learning embedded systems development.
 
 ## Overview
-This repository contains various Arduino projects implemented in C++ to explore embedded programming concepts. The goal is to understand low-level hardware interaction, memory management, and efficient code practices for embedded development.
+This repository contains various Arduino projects implemented in C and C++ to explore embedded programming concepts. The goal is to understand low-level hardware interaction, memory management, and efficient code practices for embedded development.
 
-Since the goal is to learn C++ for embedded systems, some of the projects also contain a version of the code written in the Arduino language (.ino). Most of the projects could have been written in C, but since C++ is compatible, I chose it.
+Since the goal is to learn C & C++ for embedded systems, some of the projects also contain a version of the code written in the Arduino language (.ino). 
 
 ## Projects
 blink - Classic LED blink, exploring GPIO control and timing

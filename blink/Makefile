@@ -1,73 +1,63 @@
-# ==== Microcontroller settings ====
-MCU        = atmega328p
-F_CPU      = 16000000UL
-BAUD       = 9600                # UART baud for your code
+# Simple Arduino Makefile for C/C++
+# Usage: make upload (or just 'make' to build)
 
-# ==== Toolchain ====
-CXX        = avr-g++             # use C++ compiler
-OBJCOPY    = avr-objcopy
-OBJDUMP    = avr-objdump
-SIZE       = avr-size
-
-# ==== Programmer (Arduino bootloader) ====
-PROGRAMMER   = arduino
-PORT         = COM7
-SERIAL_BAUD  = 115200            
-AVRDUDE      = avrdude
+# ==== Hardware Settings ====
+MCU = atmega328p
+F_CPU = 16000000UL
+PORT = COM7
 
 # ==== Project ====
-TARGET    = main
-SRCDIR    = src
-SOURCES   = $(wildcard $(SRCDIR)/*.cpp)
-OBJECTS   = $(SOURCES:.cpp=.o)
-DEPS      = $(OBJECTS:.o=.d)
+TARGET = main
+SRCDIR = src
 
-# ==== Flags ====
-COMMON_DEFS  = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD)
-COMMON_MCU   = -mmcu=$(MCU)
+# Find all C and C++ source files
+C_SOURCES = $(wildcard $(SRCDIR)/*.c)
+CPP_SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS = $(C_SOURCES:.c=.o) $(CPP_SOURCES:.cpp=.o)
 
-CXXFLAGS  = $(COMMON_MCU) $(COMMON_DEFS) -Os -Wall -Wextra -std=c++20 \
-            -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
-            -ffunction-sections -fdata-sections -MMD -MP
-# Uncomment to enable LTO (make sure to use the same at link time)
-# CXXFLAGS += -flto
+# ==== Toolchain ====
+CC = avr-gcc
+CXX = avr-g++
+OBJCOPY = avr-objcopy
+SIZE = avr-size
+AVRDUDE = avrdude
 
-LDFLAGS   = $(COMMON_MCU) -Wl,--gc-sections
-# LDFLAGS  += -flto
+# ==== Compiler Flags ====
+CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os -Wall -std=c99
+CXXFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os -Wall -std=c++11
+LDFLAGS = -mmcu=$(MCU)
 
-# ==== Targets ====
-.PHONY: all clean upload flash size disasm
-
+# ==== Default Target ====
 all: $(TARGET).hex size
 
-# Compile C++ sources
+# ==== Build Rules ====
+# Compile C files
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Compile C++ files  
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Link
 $(TARGET).elf: $(OBJECTS)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CC) $(LDFLAGS) $^ -o $@
 
-# Hex
+# Create hex file
 $(TARGET).hex: $(TARGET).elf
-	$(OBJCOPY) -O ihex -R .eeprom $< $@
+	$(OBJCOPY) -O ihex $< $@
 
-# Size
+# Show size
 size: $(TARGET).elf
+	@echo "Program size:"
 	$(SIZE) --format=avr --mcu=$(MCU) $<
 
-# Upload via Arduino bootloader
-upload flash: $(TARGET).hex
-	$(AVRDUDE) -c $(PROGRAMMER) -p $(MCU) -P $(PORT) -b $(SERIAL_BAUD) -D -U flash:w:$<:i
+# Upload to Arduino
+upload: $(TARGET).hex
+	$(AVRDUDE) -c arduino -p $(MCU) -P $(PORT) -b 115200 -D -U flash:w:$<:i
 
-# Disassembly + source interleave to .lst
-disasm: $(TARGET).elf
-	$(OBJDUMP) -S -d $< > $(TARGET).lst
-	@echo "Wrote $(TARGET).lst"
-
-# Clean
+# Clean up
 clean:
-	rm -f $(OBJECTS) $(DEPS) $(TARGET).elf $(TARGET).hex $(TARGET).lst
+	rm -f $(SRCDIR)/*.o $(TARGET).elf $(TARGET).hex
 
-# Include auto-generated dependency files
--include $(DEPS)
+.PHONY: all size upload clean
