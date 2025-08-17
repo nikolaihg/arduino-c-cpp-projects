@@ -14,13 +14,16 @@ void loop() {
     V_out = (reading from ADC) * (5 / 1024)
     */
     int input = analogRead(SENSOR_PIN);
-    float voltage = input * (5.0 / 1024.0);
+    float voltage = input * (VCC / ADC_MAX);
     float temp = (voltage - 0.5) * 100;
 
-    Serial.print("Temperature: ");
-    Serial.print(temp);
-    Serial.print("°C");
-    Serial.println();
+    Serial.print("Raw ADC: ");
+    Serial.print(input);
+    Serial.print(" | Voltage: ");
+    Serial.print(voltage, 2);
+    Serial.print("V | Temperature: ");
+    Serial.print(temp, 1);
+    Serial.println("°C");
     
-    delay(1000);
+    delay(SAMPLE_DELAY);
 }

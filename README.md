@@ -29,18 +29,21 @@ arduino-cli upload -p COM7 --fqbn arduino:avr:uno /path/to/your/sketch
 ```
 
 ## Projects
-blink - Classic LED blink, exploring GPIO control and timing
-- .ino version: 
-    - 340 bytes (1%) of program storage space
-    - 9 bytes (0%) of dynamic memory
-- .c version: 
-    - Program:  176 bytes (0.5% Full)
-    - Data:       0 bytes (0.0% Full)
-tmp36 - Temperature sensor reading with ADC operations
-- .ino version:
-- .c version:
-    Program:    2766 bytes (8.4% Full)
-    Data:         20 bytes (1.0% Full)
+- blink - Classic LED blink, exploring GPIO control and timing
+    - .ino version: 
+        - 340 bytes (1%) of program storage space
+        - 9 bytes (0%) of dynamic memory
+    - .c version: 
+        - Program:  176 bytes (0.5% Full)
+        - Data:       0 bytes (0.0% Full)
+- tmp36 - Temperature sensor reading with ADC operations
+    - .ino version:
+        - 5108 bytes (15%) of program storage space
+        - 232 bytes (11%) of dynamic memory
+    - .c version:
+        - Program:    4256 bytes (13.0% Full)
+        - Data:         48 bytes (2.3% Full)
+
 Next up:
 i2c
 ssd1306+tmp36

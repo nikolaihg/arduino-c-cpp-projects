@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BAUD 9600 // Serial communication speed
 #define MYUBRR F_CPU/16/BAUD-1 // UBBR = UART BAUD RATE REGISTER, F_CPU = clock frequency
@@ -27,6 +28,12 @@ void uart_print(const char* str) {
     while (*str) {
         uart_transmit(*str++);
     }
+}
+
+void uart_print_int(uint16_t value) {
+    char buffer[8];
+    sprintf(buffer, "%u", value);
+    uart_print(buffer);
 }
 
 void uart_print_float(float value) {
@@ -56,10 +63,16 @@ int main() {
         float voltage = adc_value * (VCC / ADC_MAX);
         float temperature = (voltage - 0.5) * 100.0;
        
-        uart_print("Temperature: ");
+        uart_print("Raw ADC: ");
+        uart_print_int(adc_value);
+        uart_print(" | Voltage: ");
+        uart_print_float(voltage);
+        uart_print("V | Temperature: ");
         uart_print_float(temperature);
-        uart_print("°C\n");
+        uart_print("C\r\n");
        
         _delay_ms(SAMPLE_DELAY);
     }
+    
+    return 0;
 }
